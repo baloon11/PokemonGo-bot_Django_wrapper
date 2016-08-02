@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block js %}
+    <script>
+      $(document).ready(function(){
+            // if ( {{ error }} ) {
+            //   $("#run").attr('disabled',true);
+            //   $("#stop").attr('disabled',true);
+            // };
+
+          $("#run").click(function(event){
+            event.preventDefault();
+            $.ajax({
+              type: 'POST',
+              url:'{% url 'ajax' %}',
+              data:{'start':'start'},
+              dataType: 'json',
+              success: function(response){
+                $('#result').html("<h1>"+response['start_success']+"</h1>");
+                }
+            });
+          });
+
+          $("#stop").click(function(event){
+            event.preventDefault();
+            $.ajax({
+              type: 'POST',
+              url: '{% url 'ajax' %}',
+              data:{'stop':'stop'},
+              dataType: 'json',
+              success: function(response){
+                $('#result').html("<h1>"+response['stop_success']+"</h1>");
+                }
+            });
+          });
+      });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <br>
+          <div align="center" style="padding-top:80px ">
+            <button type="button" class="btn btn-primary" id="run">Run</button>
+            <br>
+            <br>
+            <!-- <button type="button" class="btn btn-primary" id="stop">Stop</button> -->
+            <br>
+            <br>
+            <div  align="center" id ="result"></div>
+          </div>
+
+    {% else %}
+    <a href="{% url 'create' %}">create an account</a>
+    {% endif %}
+
+{% endblock %}

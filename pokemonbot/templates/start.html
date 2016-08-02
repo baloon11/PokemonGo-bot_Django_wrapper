@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <br>
+        <div align="center">
+            <h3 style="padding-top:80px ">
+                You logged in as {{ user.username }} <br><br>
+                <a href="{% url 'settings' id=user.id %}">setting page</a>
+                <a href="{% url 'bot' id=user.id %}">start/stop your bot</a>
+            </h3>
+        </div>
+    {% else %}
+        <a href="{% url 'create' %}">create an account</a>
+        <div align="center">
+        <br>
+            <br>
+            <h1>Sign In</h1>
+            <div class="pad_center" >
+                <h4> {{error_start}} </h4>
+                {% if form.errors %}
+                    <p style="color: red;">
+                        Please correct errors
+                    </p>
+                {% endif %}
+                <form action="" method="post">
+                    <div style="padding-right:80px">
+                    {% csrf_token %}
+                        <table>
+                            {{form}}
+                        </table>
+                    
+                    </div>
+                    <br>
+                    <div class="btn_position" > 
+                        <input type="submit" class="btn btn-primary" value="Login">
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
